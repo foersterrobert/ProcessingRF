@@ -173,8 +173,12 @@ void keyPressed() {
 }
 
 void mouseClicked() {
-  if (mouseX > 500 && mouseX < 900 && mouseY > 300 && mouseY < 400) {
+  if (mouseX > 500 && mouseX < 900 && mouseY > 300 && mouseY < 400 && started == false) {
     started = true;
+    aliens = new Alien[40];
+    for (int i = 0; i < aliens.length; i++) {
+      aliens[i] = new Alien((i%10)*120 + 100, 120 * floor(i / 10) + 50);
+    }
   }
 }
 
@@ -206,6 +210,26 @@ void updateAliens() {
         break;
       }
     }
+  }
+  
+  // ckeck ship
+  for (int i = 0; i < aliens.length; i++) {
+    if (aliens[i].dead == false) {
+      if (checkCollide(img_Alien.height, img_Ship.height, aliens[i].y, height - img_Ship.height)) {
+        if (checkCollide(img_Alien.width, img_Ship.width, aliens[i].x, ship.x)) {
+          started = false;
+          break;
+        }
+      }
+    }
+  }
+  
+  // check bottom
+  for (int i = 0; i < aliens.length; i++) {
+    if (aliens[i].y > height - img_Alien.height && aliens[i].dead == false) {
+              started = false;
+              break;
+            }
   }
   
   // move aliens

@@ -119,7 +119,6 @@ void draw() {
 
 void updateScreen() {
   background(255);
-  // cursor(HAND);
   for (int i = 0; i < ship.bullets.length; i++) {
     if (ship.bullets[i].active == true) {
       ship.bullets[i].Blit();
@@ -137,15 +136,27 @@ void updateScreen() {
     fill(50, 240, 50);
     rect(500, 300, width - 1000, height - 700);
     fill(204, 102, 0);
-    text("Start", 540, 350);
-      if (mouseX > 500 && mouseX < 900 && mouseY > 300 && mouseY < 400) {
-        cursor(HAND);
-      }
-      
-      else {
-        cursor(ARROW);
+    text("Press Space", 540, 350);
+    if (keyPressed) {
+      if (key == 32) {
+        started = true;
+        aliens = new Alien[40];
+        for (int i = 0; i < aliens.length; i++) {
+          aliens[i] = new Alien((i%10)*120 + 100, 120 * floor(i / 10) + 50);
+        }
+        for (int i = 0; i < ship.bullets.length; i++) {
+          ship.bullets[i] = new Bullet();
+        }
       }
     }
+    if (mouseX > 500 && mouseX < 900 && mouseY > 300 && mouseY < 400) {
+      cursor(HAND);
+    }
+    
+    else {
+      cursor(ARROW);
+    }
+  }
   
   else {
     noCursor();
@@ -178,6 +189,9 @@ void mouseClicked() {
     aliens = new Alien[40];
     for (int i = 0; i < aliens.length; i++) {
       aliens[i] = new Alien((i%10)*120 + 100, 120 * floor(i / 10) + 50);
+    }
+    for (int i = 0; i < ship.bullets.length; i++) {
+      ship.bullets[i] = new Bullet();
     }
   }
 }
@@ -241,7 +255,7 @@ void updateAliens() {
   
   if (newRound()) {
     for (int i = 0; i < aliens.length; i++) {
-      aliens[i] = new Alien((i%10)*120 + 50, 120 * floor(i / 10));
+      aliens[i] = new Alien((i%10)*120 + 100, 120 * floor(i / 10) + 50);
     }
     for (int i = 0; i < ship.bullets.length; i++) {
       ship.bullets[i].active = false;

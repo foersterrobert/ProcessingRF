@@ -1,6 +1,6 @@
 # ProcessingSpaceInvaders
 
-![ScreenShot](/ScreenShot.png)
+![ScreenShot](/ProcessingSpaceInvaders/ScreenShot.png)
 
 ### Von Variablen zu Space Invaders
 ---

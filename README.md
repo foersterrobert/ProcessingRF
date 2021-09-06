@@ -28,3 +28,16 @@ println(x)
 --> 0
 --> 2
 ```
+##### integer lassen sich adaptiv ändern über +, -, *, / durch z.B. += wird der alte Wert um einen neuen addiert.
+
+##### andere Datentypen sind floats (fließkommazahlen), Strings oder die in Processing vordefinierten Datentypen PImage, PFont
+
+##### if ()
+##### else if ()
+##### else
+
+##### Kondition um etwas auszuführen
+
+##### Funktionen
+##### return (void)
+

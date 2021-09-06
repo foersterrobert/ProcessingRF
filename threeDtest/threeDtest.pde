@@ -5,6 +5,7 @@ int score;
 int round;
 PImage bg;
 PImage groundImage;
+PShape rocket;
 
 class Player {
   float eyeX, eyeY, eyeZ; // Position Kamera
@@ -14,7 +15,7 @@ class Player {
   // Konstruktor
   Player() {
     eyeX = 0;
-    eyeY = -height/4.0;
+    eyeY = -100;
     eyeZ = 0;
     centerX = 0;
     centerY = -20;
@@ -25,6 +26,12 @@ class Player {
     camera(eyeX, eyeY, eyeZ,
     centerX, centerY, centerZ,
     0, 1, 0);
+    pushMatrix();
+    translate(eyeX, 0, eyeZ - 100);
+    rotateX(radians(180));
+    scale(3);
+    shape(rocket);
+    popMatrix();
   }
 }
 
@@ -95,6 +102,7 @@ void setup() {
   scoreFont = createFont("Terminator Two", 26);
   score = 0;
   round = 1;
+  rocket = loadShape("base.obj");
 }
 
 void draw() {
@@ -178,9 +186,8 @@ void moveScreen() {
     }
   }
 
-  
   for (int i = 0; i < walls.length; i++) {
-    if (abs(player.eyeZ - 30 - walls[i].z) <= walls[i].w && abs(player.eyeX - walls[i].x) <= walls[i].w / 1.5 && walls[i].active == true) {
+    if (abs(player.eyeZ - 70 - walls[i].z) <= walls[i].w && abs(player.eyeX - walls[i].x) <= walls[i].w && walls[i].active == true) {
       score = 0;
       round = 1;
       walls = new Wall[4 + round];

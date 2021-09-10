@@ -5,12 +5,14 @@ int score;
 int round;
 PImage bg;
 PImage groundImage;
+PShape threedchar;
 PShape rocket;
 
 class Player {
   float eyeX, eyeY, eyeZ; // Position Kamera
   float centerX, centerY, centerZ; // Zielpunkt der Kamera
   float SPEED = 5; // Fortbewegung pro Schritt
+  int charRotate = 0;
 
   // Konstruktor
   Player() {
@@ -29,8 +31,9 @@ class Player {
     pushMatrix();
     translate(eyeX, 0, eyeZ - 100);
     rotateX(radians(180));
+    rotateY(radians(charRotate));
     scale(3);
-    shape(rocket);
+    shape(threedchar);
     popMatrix();
   }
 }
@@ -94,7 +97,7 @@ void setup() {
   player = new Player();
   walls = new Wall[4 + round];
   for (int i = 0; i < walls.length; i++) {
-    walls[i] = new Wall(random(-180, 180), 0, random(-1400, -800), 40, 3, random(2, 2 + round / 4));
+    walls[i] = new Wall(random(-180, 180), 0, random(-1400, -820), 40, 3, random(2, 2 + round / 4));
   }
   bg = loadImage("bg.jpg");
   bg.resize(400, 210);
@@ -102,7 +105,9 @@ void setup() {
   scoreFont = createFont("Terminator Two", 26);
   score = 0;
   round = 1;
-  rocket = loadShape("base.obj");
+  threedchar = loadShape("3DScan_Man_016.obj");
+  threedchar.setFill(color(247, 237, 178));
+  rocket = loadShape("rocket.obj");
 }
 
 void draw() {
@@ -111,7 +116,7 @@ void draw() {
     round += 1;
     walls = new Wall[4 + round];
     for (int i = 0; i < walls.length; i++) {
-      walls[i] = new Wall(random(-180, 180), 0, random(-1400, -800), 40, 3, random(2, 2 + round / 4));
+      walls[i] = new Wall(random(-180, 180), 0, random(-1400, -820), 40, 3, random(2, 2 + round / 4));
     }
   }
   
@@ -124,18 +129,22 @@ void draw() {
     if (keyCode == LEFT && player.eyeX > -200) {
       player.eyeX -= player.SPEED;
       player.centerX -= player.SPEED;
+      player.charRotate = -90;
     }
     if (keyCode == RIGHT && player.eyeX < 200) {
       player.eyeX += player.SPEED;
       player.centerX += player.SPEED;
+      player.charRotate = 90;
     }
     if (keyCode == UP && player.eyeZ > -600) {
       player.eyeZ -= player.SPEED;
       player.centerZ -= player.SPEED;
+      player.charRotate = 0;
     }
     if (keyCode == DOWN && player.eyeZ < 0) {
       player.eyeZ += player.SPEED;
       player.centerZ += player.SPEED;
+      player.charRotate = 180;
     }
   }
   
@@ -172,8 +181,10 @@ void updateScreen() {
   pushMatrix();
   noStroke();
   fill(255, 255, 0);
-  translate(cos(radians(x/3)) * 160,  - 80 - abs(sin(radians(x/3)) * 100), -780);
-  sphere(40);
+  translate(cos(radians(x/3)) * 160,  - 80 - abs(sin(radians(x/3)) * 100), -750);
+  rotateX(radians(abs(cos(radians(x/3))) * 90 + 90));
+  scale(.2);
+  shape(rocket);
   popMatrix();
 }
 

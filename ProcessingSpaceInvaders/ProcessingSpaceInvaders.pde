@@ -1,3 +1,6 @@
+import processing.sound.*;
+SoundFile shootSound;
+SoundFile overSound;
 PImage img_Ship;
 PImage img_Alien;
 PImage img_Bullet;
@@ -41,6 +44,7 @@ class Ship {
         bullets[i].active = true;
         bullets[i].x = ship.x + img_Ship.width / 2;
         bullets[i].y = height - img_Ship.height;
+        shootSound.play(1, 0.3);
         break;
       }
     }
@@ -82,6 +86,8 @@ Alien aliens[];
 
 void setup () {
   size(1400, 800);
+  shootSound = new SoundFile(this, "shoot.mp3");
+  overSound = new SoundFile(this, "over.wav");
   img_Ship = loadImage("ship.png");
   img_Ship.resize(100, 100);
   img_Alien = loadImage("alien.png");
@@ -232,6 +238,7 @@ void updateAliens() {
       if (checkCollide(img_Alien.height, img_Ship.height, aliens[i].y, height - img_Ship.height)) {
         if (checkCollide(img_Alien.width, img_Ship.width, aliens[i].x, ship.x)) {
           started = false;
+          overSound.play(1, 0.2);
           break;
         }
       }
@@ -242,6 +249,7 @@ void updateAliens() {
   for (int i = 0; i < aliens.length; i++) {
     if (aliens[i].y > height - img_Alien.height && aliens[i].dead == false) {
               started = false;
+              overSound.play(1, 0.2);
               break;
             }
   }

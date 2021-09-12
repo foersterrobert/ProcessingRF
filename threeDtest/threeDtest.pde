@@ -92,7 +92,7 @@ Player player;
 Ground ground;
 
 void setup() {
-  size(600, 400, P3D);
+  size(1200, 800, P3D);
   ground = new Ground();
   player = new Player();
   walls = new Wall[4 + round];
@@ -105,7 +105,7 @@ void setup() {
   scoreFont = createFont("Terminator Two", 26);
   score = 0;
   round = 1;
-  threedchar = loadShape("3DScan_Man_016.obj");
+  threedchar = loadShape("base.obj");
   threedchar.setFill(color(247, 237, 178));
   rocket = loadShape("rocket.obj");
 }
@@ -181,7 +181,7 @@ void updateScreen() {
   pushMatrix();
   noStroke();
   fill(255, 255, 0);
-  translate(cos(radians(x/3)) * 160,  - 80 - abs(sin(radians(x/3)) * 100), -750);
+  translate(cos(radians(x/3)) * 160, - abs(sin(radians(x/3)) * 160), -750);
   rotateX(radians(abs(cos(radians(x/3))) * 90 + 90));
   scale(.2);
   shape(rocket);

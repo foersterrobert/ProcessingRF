@@ -133,7 +133,7 @@ void setup() {
     wallCords += walls[i].b + "$";
     wallCords += walls[i].active + "_";
   }
-  PutRequest put = new PutRequest("http://127.0.0.1:5000/3d/1/" + id);
+  PutRequest put = new PutRequest("http://processing-api.herokuapp.com/3d/1/" + id);
   put.addHeader("Content-Type", "application/json");
   put.addData("{\"x\":" + player.eyeX + ",\"y\":" + player.eyeY + ",\"z\":" + player.eyeZ + ",\"r\":" + player.charRotate + ",\"animation\":" + player.animation + ",\"round\":" + round + ",\"walls\":\"" + wallCords + "\",\"dead\":\"" + player.dead + "\",\"name\":\"" + name + "\"}");
   put.send();
@@ -157,11 +157,13 @@ void setup() {
 
 void draw() {
   x += round;
-  if (newRound()) {
-    round += 1;
-    walls = new Wall[4 + round];
-    for (int i = 0; i < walls.length; i++) {
-      walls[i] = new Wall(random(-180, 180), random(-1400, -820), 40, 3, random(2, 2 + round / 4));
+  if (id == 1) {
+    if (newRound()) {
+      round += 1;
+      walls = new Wall[4 + round];
+      for (int i = 0; i < walls.length; i++) {
+        walls[i] = new Wall(random(-180, 180), random(-1400, -820), 40, 3, random(2, 2 + round / 4));
+      }
     }
   }
 
@@ -204,12 +206,12 @@ void draw() {
     moveScreen();
   }
   for (int i = 0; i < walls.length; i++) {
-    if (abs(player.eyeZ - 70 - walls[i].z) <= walls[i].w && abs(player.eyeX - walls[i].x) <= walls[i].w && walls[i].active == true) {
+    if (abs(player.eyeZ - 80 - walls[i].z) <= walls[i].w && abs(player.eyeX - walls[i].x) <= walls[i].w / 1.3 && walls[i].active == true) {
       player.dead = true;
       break;
     }
   }
-  if (load % 10 == 0) {
+  if (load % 1 == 0) {
     thread("loadApi");
   }
   load += 1;
@@ -285,7 +287,7 @@ void loadApi() {
     wallCords += walls[i].b + "$";
     wallCords += walls[i].active + "_";
   }
-  PostRequest post = new PostRequest("http://127.0.0.1:5000/3d/1/" + id);
+  PostRequest post = new PostRequest("http://processing-api.herokuapp.com/3d/1/" + id);
   post.addHeader("Content-Type", "application/json");
   post.addData("{\"x\":" + player.eyeX + ",\"y\":" + player.eyeY + ",\"z\":" + player.eyeZ + ",\"r\":" + player.charRotate + ",\"animation\":" + player.animation + ",\"round\":" + round + ",\"walls\":\"" + wallCords + "\",\"dead\":\"" + player.dead + "\",\"name\":\"" + name + "\"}");
   post.send();

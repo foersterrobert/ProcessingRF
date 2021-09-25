@@ -1,17 +1,17 @@
 import http.requests.*;
 import processing.sound.*;
 
-int id = 8;
+int id = 1;
+String name = "Robert";
 
 boolean started = false;
 int x = 0;
 int load = 0;
 PFont scoreFont;
-int score;
-int otherScore;
 int n;
 int round;
 String wallCords;
+String alivePlayers = "";
 PImage bg;
 PImage groundImage;
 PShape[] model = new PShape[5];
@@ -24,12 +24,13 @@ class Player {
   float SPEED = 5; // Fortbewegung pro Schritt
   int charRotate = 0;
   float animation = 0;
+  boolean dead;
 
   // Konstruktor
   Player() {
-    eyeX = 0;
+    eyeX = 0.01;
     eyeY = -100;
-    eyeZ = 0;
+    eyeZ = -0.01;
     centerX = 0;
     centerY = -20;
     centerZ = -240;
@@ -41,29 +42,31 @@ class Player {
         centerX, centerY, centerZ, 
         0, 1, 0);
     }
-    pushMatrix();
-    translate(eyeX, 0, eyeZ - 100);
-    rotateX(radians(180));
-    rotateY(radians(charRotate));
-    scale(750);
-    shape(model[floor(animation) % model.length]);
-    popMatrix();
+    if (dead == false) {
+      pushMatrix();
+      translate(eyeX, 0, eyeZ - 100);
+      rotateX(radians(180));
+      rotateY(radians(charRotate));
+      scale(750);
+      shape(model[floor(animation) % model.length]);
+      popMatrix();
+    }
   }
 }
 
 class Wall {
   float x;
-  float y;
   float z;
   int h;
   int w;
   float speed;
-  color c = color(random(255), random(255), random(255));
+  float r = random(255);
+  float g = random(255);
+  float b = random(255);
   boolean active = true;
 
-  Wall(float posx, float posy, float posz, int posw, int posh, float nspeed) {
+  Wall(float posx, float posz, int posw, int posh, float nspeed) {
     x = posx;
-    y = posy;
     z = posz;
     h = posh;
     w = posw;
@@ -73,8 +76,8 @@ class Wall {
   void drawWall() {
     pushMatrix();
     noStroke();
-    fill(c);
-    translate(x, y-w/2, z);
+    fill(color(r, g, b));
+    translate(x, 0-w/2, z);
     box(w);
     for (int i = 0; i < h; i++) {
       translate(0, -w, 0);
@@ -101,38 +104,38 @@ class Ground {
 }
 
 Wall walls[];
-Player player1;
+Player player;
 Player players[];
 Ground ground;
 
 void setup() {
   size(1200, 800, P3D);
   ground = new Ground();
-  player1 = new Player();
-  walls = new Wall[4 + round];
+  player = new Player();
+  walls = new Wall[3 + id + round];
   for (int i = 0; i < walls.length; i++) {
-    walls[i] = new Wall(random(-180, 180), 0, random(-1400, -820), 40, 3, random(2, 2 + round / 4));
+    walls[i] = new Wall(random(-180, 180), random(-1400, -820), 40, 3, random(2, 2 + round / 4));
   }
   bg = loadImage("bg.jpg");
   bg.resize(400, 210);
   groundImage = loadImage("ground.jpg");
-  scoreFont = createFont("Terminator Two", 22);
-  score = 0;
-  otherScore = 0;
+  scoreFont = createFont("Terminator Two", 20);
   round = 1;
   wallCords = "";
   for (int i = 0; i < walls.length; i++) {
     wallCords += walls[i].x + "$";
     wallCords += walls[i].z + "$";
-    wallCords += walls[i].h + "$";
     wallCords += walls[i].w + "$";
+    wallCords += walls[i].h + "$";
     wallCords += walls[i].speed + "$";
-    wallCords += walls[i].c + "$";
+    wallCords += walls[i].r + "$";
+    wallCords += walls[i].g + "$";
+    wallCords += walls[i].b + "$";
     wallCords += walls[i].active + "_";
   }
   PutRequest put = new PutRequest("http://127.0.0.1:5000/3d/1/" + id);
   put.addHeader("Content-Type", "application/json");
-  put.addData("{\"x\":" + player1.eyeX + ",\"y\":" + player1.eyeY + ",\"z\":" + player1.eyeZ + ",\"r\":" + player1.charRotate + ",\"animation\":" + player1.animation + ",\"score\":" + score + ",\"walls\":\"" + wallCords + "\"}");
+  put.addData("{\"x\":" + player.eyeX + ",\"y\":" + player.eyeY + ",\"z\":" + player.eyeZ + ",\"r\":" + player.charRotate + ",\"animation\":" + player.animation + ",\"round\":" + round + ",\"walls\":\"" + wallCords + "\",\"dead\":\"" + player.dead + "\",\"name\":\"" + name + "\"}");
   put.send();
   JSONObject response = parseJSONObject(put.getContent());
   n = response.getInt("n");
@@ -144,7 +147,6 @@ void setup() {
       players[i] = new Player();
     }
   }
-  
   for (int i = 0; i < model.length; i++) {
     model[i] = loadShape("base" + (i + 1) + ".obj");
   }
@@ -159,53 +161,58 @@ void draw() {
     round += 1;
     walls = new Wall[4 + round];
     for (int i = 0; i < walls.length; i++) {
-      walls[i] = new Wall(random(-180, 180), 0, random(-1400, -820), 40, 3, random(2, 2 + round / 4));
+      walls[i] = new Wall(random(-180, 180), random(-1400, -820), 40, 3, random(2, 2 + round / 4));
     }
   }
 
   if (keyPressed) {
-    if (started == false) {
+    if (id == 1) {
       if (key == 32) {
         started = true;
       }
+      if (key == 'r' || key == 'R') {
+        restart();
+      }
     }
-    if (keyCode == LEFT && player1.eyeX > -200) {
-      player1.eyeX -= player1.SPEED;
-      player1.centerX -= player1.SPEED;
-      player1.charRotate = -90;
-      player1.animation += 0.2;
+    if (keyCode == LEFT && player.eyeX > -200) {
+      player.eyeX -= player.SPEED;
+      player.centerX -= player.SPEED;
+      player.charRotate = -90;
+      player.animation += 0.2;
     }
-    if (keyCode == RIGHT && player1.eyeX < 200) {
-      player1.eyeX += player1.SPEED;
-      player1.centerX += player1.SPEED;
-      player1.charRotate = 90;
-      player1.animation += 0.2;
+    if (keyCode == RIGHT && player.eyeX < 200) {
+      player.eyeX += player.SPEED;
+      player.centerX += player.SPEED;
+      player.charRotate = 90;
+      player.animation += 0.2;
     }
-    if (keyCode == UP && player1.eyeZ > -600) {
-      player1.eyeZ -= player1.SPEED;
-      player1.centerZ -= player1.SPEED;
-      player1.charRotate = 1;
-      player1.animation += 0.2;
+    if (keyCode == UP && player.eyeZ > -600) {
+      player.eyeZ -= player.SPEED;
+      player.centerZ -= player.SPEED;
+      player.charRotate = 1;
+      player.animation += 0.2;
     }
-    if (keyCode == DOWN && player1.eyeZ < 0) {
-      player1.eyeZ += player1.SPEED;
-      player1.centerZ += player1.SPEED;
-      player1.charRotate = 180;
-      player1.animation += 0.2;
+    if (keyCode == DOWN && player.eyeZ < 0) {
+      player.eyeZ += player.SPEED;
+      player.centerZ += player.SPEED;
+      player.charRotate = 180;
+      player.animation += 0.2;
     }
   }
-
-
-  if (load % 100 == 0) {
-    thread("loadApi");
-  }
-  load += 1;
-
-  music.amp(0.5 + abs(player1.eyeZ / 1200));
-
+  music.amp(0.5 + abs(player.eyeZ / 1200));
   if (started == true) {
     moveScreen();
   }
+  for (int i = 0; i < walls.length; i++) {
+    if (abs(player.eyeZ - 70 - walls[i].z) <= walls[i].w && abs(player.eyeX - walls[i].x) <= walls[i].w && walls[i].active == true) {
+      player.dead = true;
+      break;
+    }
+  }
+  if (load % 10 == 0) {
+    thread("loadApi");
+  }
+  load += 1;
   updateScreen();
 }
 
@@ -219,15 +226,14 @@ void updateScreen() {
   translate(0, 0, -780);
   image(bg, - bg.width/ 2, - bg.height);
   translate(0, 0, 4);
-  text("Player 1 " + score, -180, -180);
-  text("Player 2 " + otherScore, -180, -150);
+  text(alivePlayers, -180, -180);
   text("Round " + round, 40, -180);
-  if (started == false) {
+  if (started == false && id == 1) {
     text("Press Space", -110, -60);
   }
   popMatrix();
   noCursor();
-  player1.drawPlayer(true);
+  player.drawPlayer(true);
   for (int i = 0; i < players.length; i++) {
     players[i].drawPlayer(false);
   }
@@ -252,40 +258,36 @@ void moveScreen() {
     walls[i].move();
     if (walls[i].z > 0 & walls[i].active == true) {
       walls[i].active = false;
-      score += round;
-    }
-  }
-
-  for (int i = 0; i < walls.length; i++) {
-    if (abs(player1.eyeZ - 70 - walls[i].z) <= walls[i].w && abs(player1.eyeX - walls[i].x) <= walls[i].w && walls[i].active == true) {
-      score = 0;
-      round = 1;
-      walls = new Wall[4 + round];
-      for (int j = 0; j < walls.length; j++) {
-        walls[j] = new Wall(random(-180, 180), 0, random(-1400, -800), 40, 3, random(2, 2 + round / 4));
-      }
-      started = false;
-      delay(400);
-      break;
     }
   }
 }
 
+void restart() {
+  round = 1;
+  player.dead = false;
+  walls = new Wall[4 + round];
+  for (int j = 0; j < walls.length; j++) {
+    walls[j] = new Wall(random(-180, 180), random(-1400, -800), 40, 3, random(2, 2 + round / 4));
+  }
+  started = false;
+}
 
 void loadApi() {
   wallCords = "";
   for (int i = 0; i < walls.length; i++) {
     wallCords += walls[i].x + "$";
     wallCords += walls[i].z + "$";
-    wallCords += walls[i].h + "$";
     wallCords += walls[i].w + "$";
+    wallCords += walls[i].h + "$";
     wallCords += walls[i].speed + "$";
-    wallCords += walls[i].c + "$";
+    wallCords += walls[i].r + "$";
+    wallCords += walls[i].g + "$";
+    wallCords += walls[i].b + "$";
     wallCords += walls[i].active + "_";
   }
   PostRequest post = new PostRequest("http://127.0.0.1:5000/3d/1/" + id);
   post.addHeader("Content-Type", "application/json");
-  post.addData("{\"x\":" + player1.eyeX + ",\"y\":" + player1.eyeY + ",\"z\":" + player1.eyeZ + ",\"r\":" + player1.charRotate + ",\"animation\":" + player1.animation + ",\"score\":" + score + ",\"walls\":\"" + wallCords + "\"}");
+  post.addData("{\"x\":" + player.eyeX + ",\"y\":" + player.eyeY + ",\"z\":" + player.eyeZ + ",\"r\":" + player.charRotate + ",\"animation\":" + player.animation + ",\"round\":" + round + ",\"walls\":\"" + wallCords + "\",\"dead\":\"" + player.dead + "\",\"name\":\"" + name + "\"}");
   post.send();
   JSONObject response = parseJSONObject(post.getContent());
   String data = response.getString("data");
@@ -299,32 +301,50 @@ void loadApi() {
       }
     }
   }
+  alivePlayers = "";
+  if (player.dead == false) {
+    alivePlayers += name + " ";
+  }
   data = data.replace("[", "");
   data = data.replace("]", "");
   if (n > 0) {
     String[] dataList = split(data, ",");
     for (int i = 0; i < dataList.length; i++) {
       String[] playerList = split(dataList[i], ";");
-      players[i].eyeX = int(trim(playerList[2]));
-      players[i].eyeZ = int(trim(playerList[4]));
+      players[i].eyeX = float(trim(playerList[2]));
+      players[i].eyeZ = float(trim(playerList[4]));
       players[i].charRotate = int(trim(playerList[5]));
       players[i].animation = int(trim(playerList[6]));
-      
-      if (id != 1 && int(trim(playerList[0])) == 1) {
+      players[i].dead = boolean(trim(playerList[9]));
+      if (players[i].dead == false) {
+        alivePlayers += playerList[10];
+      }
+
+      if (int(trim(playerList[0])) == 1) {
+        round = int(playerList[7]);
+        playerList[8] = playerList[8].substring(0, playerList[8].length()-1);
         String[] wallsList = split(playerList[8], "_");
         if (wallsList.length != walls.length) {
           walls = new Wall[wallsList.length];
-          for (int j = 0; j < walls.length; j++) {
+          for (int j = 0; j < wallsList.length; j++) {
             String[] wallList = split(wallsList[j], "$");
-            println(wallList);
-            walls[j] = new Wall(int(wallList[0]), 0, int(wallList[1]), 40, 3, random(2, 2 + round / 4));
+            walls[j] = new Wall(float(wallList[0]), float(wallList[1]), int(wallList[2]), int(wallList[3]), float(wallList[4]));
+            walls[j].r = float(wallList[5]);
+            walls[j].g = float(wallList[6]);
+            walls[j].b = float(wallList[7]);
+            walls[j].active = boolean(wallList[8]);
+          }
+        }
+        else {
+          for (int j = 0; j < wallsList.length; j++) {
+            String[] wallList = split(wallsList[j], "$");
+            walls[j].z = float(wallList[1]);
           }
         }
       }
     }
   }
 }
-
 
 boolean newRound() {
   for (int i = 0; i < walls.length; i++) {

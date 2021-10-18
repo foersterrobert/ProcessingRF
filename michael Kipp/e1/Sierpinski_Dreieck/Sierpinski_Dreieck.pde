@@ -12,22 +12,25 @@ void draw() {
   translate(width/2, height/2);
   triangle(0, -height/2, -width/2, height/2, width/2, height/2);
   fill(255);
-  sierpinski();
+  sierpinski(i);
+  fill(0);
+  textSize(14);
+  text("down/up (depth:" + depth + ")", -width/2+10, -height/2+10);
 }
 
-void sierpinski() {
-  triangle(0, height/(2*i), -width/(4*i), 0, width/(4*i), 0);
+void sierpinski(int i) {
+  triangle(0, height/pow(2, i), -width/pow(2, i+1), 0, width/pow(2, i+1), 0);
   if (i < depth) {
     i++;
     for (int j = -1; j < 2; j++) {
       pushMatrix();
       if (j == 0) {
-        translate(0, -height/(2*i));
+        translate(0, -height/pow(2,i));
       }
       else {
-        translate(width/(2*i)*j, height/(2*i));
+        translate(width/pow(2,i)*j, height/pow(2,i));
       }
-      sierpinski();
+      sierpinski(i);
       popMatrix();
     }
   }

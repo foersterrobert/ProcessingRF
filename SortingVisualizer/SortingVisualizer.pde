@@ -49,8 +49,6 @@ int insertionSort(float[] arr) {
           arr[j+1] = arr[j];
           j--;
       }
-      // at this point we've exited, so j is either -1
-      // or it's at the first element where current >= a[j]
       arr[j+1] = current;
       return i;
   }

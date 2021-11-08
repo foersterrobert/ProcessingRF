@@ -2,7 +2,7 @@
 
 ![ScreenShot](/images/ScreenShot.png)
 
-### Von Variablen zu 3D-Spielen
+### Programmieren mit Processing
 ---
 
 #### 1. Variablen
@@ -12,7 +12,7 @@ int x;
 x = 0;
 println(x);
 ```
-##### Als erstes deklarieren wir den integer x. Initialisieren ihn auf 0 und drucken in anschließlich in der Konsole. Mit dem Semikolon am Ende einer Zeile trennen wir unsere Befehle und machen Sie für den Computer sichtbar.
+##### Als erstes deklarieren wir den integer x. Initialisieren ihn auf 0 und drucken in anschließlich in der Konsole. Mit dem Semikolon am Ende einer Zeile können wir unsere Befehlt voneinander trennen.
 ```java
 --> 0
 ```
@@ -28,13 +28,13 @@ println(x);
 --> 0
 --> 2
 ```
-##### integer lassen sich adaptiv ändern über +, -, *, / durch z.B. += wird der alte Wert um einen neuen addiert.
+##### integer lassen sich adaptiv ändern über +, -, *, /. durch z.B. += wird der alte Wert um einen neuen addiert.
 
-##### andere Datentypen sind floats (fließkommazahlen), Strings, Booleans wie true oder false oder die in Processing vordefinierten Datentypen PImage, PFont
+##### andere Datentypen sind floats (fließkommazahlen), Strings, Booleans wie true oder false, chars oder z.B. die in Processing vordefinierten Datentypen PImage, PFont
 
 ---
 #### 2. Bedingungsstatements
-##### Aktuell sind unsere Befehle an den Computer noch sehr stumpf. Im nächsten Schritt können Logik einbauen. If sagt dem Computer, dass er einen Block von befehlen ausführen soll, falls eine Gewisse Bedingung zutrifft.
+##### Aktuell sind unsere Befehle an den Computer noch sehr stumpf. Im nächsten Schritt wollen wir Logik einbauen. If sagt dem Computer, dass er einen Block von befehlen ausführen soll, falls eine Gewisse Bedingung zutrifft.
 ```java
 int x = 0;
 if (x > 0): {
@@ -48,18 +48,21 @@ if (x > 0): {
 ```java
 --> 1
 ```
-##### Neben dem if-Statement gibt es noch else oder else if.
+##### Neben dem if-Statement gibt es noch else oder else if. Else führt einen Block aus, falls eine Bedingung nicht zutrifft. Bei else-if wird eine Bedingung nur überprüft, falls weiter oben definierte Bedingungen nicht zutrafen.
 ```java
 int x = 0;
-if (x > 0): {
+if (x > 0) {
     println(x);
 }
+else if (x < 0) {
+    println(abs(x), "negative")
+}
 else {
-    println('X is to small');
+    println('x must be zero!');
 }
 ```
 ```java
---> 'X is to small'
+--> 'x must be zero!'
 ```
 #### 3. Schleifen
 ##### Die aktuelle weise wie wir code schreiben skaliert nicht sehr gut. Deshalb brauchen wir Schleifen. Es gibt for und while schleifen. 
@@ -84,7 +87,7 @@ println(CelsiusToFahrenheit(30))
 ```java
 --> 86
 ```
-##### Der Datentyp der Funktion gibt den Datentyp davon an, was die Funktion zurückgeben soll. Wenn man nichts 'returnen' möchte kann man void angeben.
+##### Der Datentyp der Funktion gibt den Datentyp davon an, was die Funktion zurückgeben soll. Wenn man nichts 'returnen' möchte, kann man void angeben.
 ##### Ähnlich wie eigene Datentypen hat Processing auch native Funktionen.
 ##### So wird die Setup Funktion direkt ausgeführt und die draw Funktion fungiert wie eine While schleife. Sie wird also jeden Frame wieder ausgeführt. Andere eingebaute Funktionen sind KeyPressed oder MousePressed.
 ```java

@@ -1,3 +1,5 @@
+boolean start = false;
+
 class Planet {
   float radius;
   PVector pos;
@@ -11,7 +13,7 @@ class Planet {
     radius = _radius;
     speed = _speed;
     ellipseSize = _ellipseSize;
-    pos = new PVector(cos(radians(0)) * ellipseSize.x, sin(radians(0)) * ellipseSize.y);
+    pos = new PVector(cos(radians(x)) * ellipseSize.x, sin(radians(x)) * ellipseSize.y);
     Color = _Color;
   }
   
@@ -19,8 +21,10 @@ class Planet {
     fill(lerpColor(color(255, 100, 30), Color, .5));
     beginShape();
     vertex(cos(radians(x-speed*10)) * ellipseSize.x, sin(radians(x-speed*10)) * ellipseSize.y);
-    vertex(pos.x, pos.y+radius/2);
-    vertex(pos.x, pos.y-radius/2);
+    vertex(pos.x+radius/3, pos.y+radius/3);
+    vertex(pos.x+radius/3, pos.y-radius/3);
+    vertex(pos.x-radius/3, pos.y+radius/3);
+    vertex(pos.x-radius/3, pos.y-radius/3);
     endShape(CLOSE);
     fill(Color);
     ellipse(pos.x, pos.y, radius, radius);
@@ -47,6 +51,7 @@ void setup() {
 
 void draw() {
   background(0);
+  cursor(ARROW);
   noStroke();
   translate(width / 2, height / 2);
   
@@ -54,7 +59,47 @@ void draw() {
     planets[i].blit();
   }
   
-  for (int i = 0; i<planets.length; i++) {
-    planets[i].move();
+  fill(200);
+  textAlign(CENTER);
+  textSize(28);
+  text(
+    "" + day() + "." + month() + "." + year() + "-" + hour() + ":" + minute(), 
+    0, 
+    -height/2.25  
+  );
+  
+  if (start) {
+    for (int i = 0; i<planets.length; i++) {
+      planets[i].move();
+    }
+    textSize(20);
+    text("+, -, SPACE", -width/2.7, height/2.1);
+  }
+  
+  else {
+    fill(0, 200, 0);
+    rect(-width/2.5, height/3, width/2.5*2, 50);
+    fill(0);
+    text("PRESS SPACE", 0, height/2.4);
+  }
+}
+
+void keyPressed() {
+  if (key == '+' && start) {
+    for (int i = 0; i<planets.length; i++) {
+      planets[i].radius *= 1.5;
+      planets[i].ellipseSize.mult(1.5);
+    }
+  }
+  
+  else if (key == '-' && start) {
+    for (int i = 0; i<planets.length; i++) {
+      planets[i].radius /= 1.5;
+      planets[i].ellipseSize.mult(1/1.5);
+    }
+  }
+  
+  if (key == 32) {
+    start = !start;
   }
 }

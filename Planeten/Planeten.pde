@@ -48,7 +48,7 @@ void setup() {
     float _radius = random(10, 15);
     planets[i] = new Planet(int(random(0, 180)), _radius, random(1, 1.5), new PVector(random(width/6, width/2-_radius), random(height/6, height/2-_radius)), color(random(255), random(255), random(255)));
   }
-  img = loadImage("img.jpg");
+  img = loadImage("starz.jpg");
   img.resize(width, height);
 }
 

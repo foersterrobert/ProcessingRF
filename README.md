@@ -64,6 +64,7 @@ else {
 ```java
 --> 'x must be zero!'
 ```
+---
 #### 3. Schleifen
 ##### Die aktuelle weise wie wir code schreiben skaliert nicht sehr gut. Deshalb brauchen wir Schleifen. Es gibt for und while schleifen. 
 ```java
@@ -76,6 +77,7 @@ for (int i = 0; i < 3; i++){
 --> 1
 --> 2
 ```
+---
 #### 4. Funktionen
 ##### Ein weiters Werkzeug beim prgrammieren sind Funktionen. Hierbei handelt es sich um längere Blöcke von Code, die wir gezielt an anderen Stellen einsetzen können.
 ```java
@@ -108,8 +110,9 @@ void draw() {
 --> 2
 --> 3
 --> 4
-.....
+....
 ```
+---
 #### 5. Vorteile von Processing
 ##### Mit Java Processing ist es möglich sehr schnell visuelle Ergbnisse für seinen Code zu bekommen. Da wir SpaceInvaders programmieren wollen können wir als erstes ein Bild von einem Raumschiff auf einem Fenster zeichnen.
 ```java
@@ -165,4 +168,5 @@ void keyPressed() {
 }
 ```
 ##### Damit die Bewegungen flüssig sind arbeiten wir mit Modes.
+---
 #### 6. Klassen

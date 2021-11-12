@@ -7,6 +7,7 @@ void setup(){
 }
 
 void draw(){
+  pushMatrix();
   translate(width/2, height/2);
   background(0);
   stroke(200);
@@ -16,6 +17,10 @@ void draw(){
       line(cords[i].x, cords[i].y, cords[i + 1].x, cords[i + 1].y); 
     }
   }
+  popMatrix();
+  textSize(14);
+  textAlign(CENTER);
+  text("+, -, click, up, down, left, right", width/2, height-10);
 }
 
 void mouseClicked() {
@@ -50,7 +55,7 @@ void keyPressed() {
     for (int i = 0; i < n; i++) {
       cords[i].x *= 1.1;
       cords[i].y *= 1.1;
-      zoom *= 1.1;
+      zoom *= 1.025;
     }
   }
   
@@ -58,28 +63,28 @@ void keyPressed() {
     for (int i = 0; i < n; i++) {
       cords[i].x /= 1.1;
       cords[i].y /= 1.1;
-      zoom /= 1.1;
+      zoom /= 1.025;
     }
   }
   
   else if (keyCode == UP) {
     for (int i = 0; i < n; i++) {
-      cords[i].y -= 2;
+      cords[i].y += 2;
     }
   } 
   else if (keyCode == DOWN) {
     for (int i = 0; i < n; i++) {
-      cords[i].y += 2;
+      cords[i].y -= 2;
     }
   }
   else if (keyCode == LEFT) {
     for (int i = 0; i < n; i++) {
-      cords[i].x -= 2;
+      cords[i].x += 2;
     }
   }
   else if (keyCode == RIGHT) {
     for (int i = 0; i < n; i++) {
-      cords[i].x += 2;
+      cords[i].x -= 2;
     }
   }
 }

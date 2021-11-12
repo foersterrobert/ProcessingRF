@@ -12,7 +12,7 @@ int x;
 x = 0;
 println(x);
 ```
-##### Als erstes deklarieren wir den integer x. Initialisieren ihn auf 0 und drucken in anschließlich in der Konsole. Mit dem Semikolon am Ende einer Zeile können wir unsere Befehlt voneinander trennen.
+##### Als erstes deklarieren wir den integer x. Initialisieren ihn auf 0 und drucken in anschließlich in der Konsole. Mit dem Semikolon am Ende einer Zeile können wir unsere Befehle voneinander trennen.
 ```java
 --> 0
 ```

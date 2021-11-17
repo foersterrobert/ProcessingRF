@@ -7,6 +7,8 @@ void setup() {
 
 void draw() {
   background(0);
+  textSize(14);
+  text("click", 20, height-10);
   textAlign(CENTER);
   textSize(28);
   text(Stext.substring(x), width/2, height/2);

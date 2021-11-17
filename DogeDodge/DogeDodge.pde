@@ -62,7 +62,7 @@ class Player {
     fill(25, 255, 100);
     for (int i = 0; i<hp; i++) {
       float eX = map(i, 0, Maxhp, 0, 360)+x;
-      ellipse(sin(radians(eX))*size*0.8, cos(radians(eX))*size*0.8, 2, 2);
+      ellipse(sin(radians(eX))*size*0.8, cos(radians(eX))*size*0.8, 3, 3);
     }
     popMatrix();
   }
@@ -70,6 +70,7 @@ class Player {
 
 Player doge;
 PImage dogeImg;
+PImage bgImg;
 SoundFile music;
 Ball[] enemies;
 boolean run = false;
@@ -80,6 +81,8 @@ void setup() {
   doge = new Player();
   dogeImg = loadImage("doge.png");
   dogeImg.resize(doge.size, doge.size);
+  bgImg = loadImage("bg.jpg");
+  bgImg.resize(width, height);
   reset();
   music = new SoundFile(this, "doge.mp3");
   music.loop();
@@ -87,7 +90,7 @@ void setup() {
 
 void draw() {
   translate(width/2, height/2);
-  background(255);
+  background(bgImg);
   noStroke();
   if (run) {
     checkCollide();
@@ -96,12 +99,12 @@ void draw() {
       enemies[i].move();
     }
     if (roundOver()) {
-      enemies = new Ball[10];
+      enemies = new Ball[20];
       for (int i = 0; i<enemies.length; i++) {
-        float eX = map(i, 0, enemies.length-1, 0, 360);
-        float eFactor = map(i, 0, enemies.length-1, width/3.5, width/2.2);
+        float eX = map(i, 0, enemies.length-1, 0, 720);
+        float eFactor = map(i, 0, enemies.length-1, width/3.2, width);
         PVector ePos = new PVector(sin(radians(eX))*eFactor+doge.pos.x, cos(radians(eX))*eFactor+doge.pos.y);
-        enemies[i] = new Ball(ePos, 2, 5, color(255, 0, 0), new PVector(doge.pos.x, doge.pos.y));
+        enemies[i] = new Ball(ePos, 2, 8, color(255, 0, 0), new PVector(doge.pos.x, doge.pos.y));
       }
       round += 1;
     }
@@ -110,15 +113,15 @@ void draw() {
     enemies[i].blit();
   }
   doge.blit();
-  fill(0);
-  text("Round: " + round, -height/2.6, -height/2.2);
-  text("HP: " + doge.hp, height/2.4, -height/2.2);
+  fill(255);
+  textSize(20);
+  text("Round: " + round, -height/2.6, -height/2.3);
+  text("HP: " + doge.hp, height/2.4, -height/2.3);
   if (run == false) {
     fill(200);
     rect(-width/4, height/3, width/2, height/10);
     fill(200, 50, 50);
     textAlign(CENTER);
-    textSize(20);
     text("PRESS SPACE", 0, height/2.55);
   }
 
@@ -159,12 +162,12 @@ boolean roundOver() {
 }
 
 void reset() {
-  enemies = new Ball[10];
+  enemies = new Ball[20];
   for (int i = 0; i<enemies.length; i++) {
-    float eX = map(i, 0, enemies.length-1, 0, 360);
-    float eFactor = map(i, 0, enemies.length-1, width/3.5, width/2.2);
+    float eX = map(i, 0, enemies.length-1, 0, 720);
+    float eFactor = map(i, 0, enemies.length-1, width/3.2, width);
     PVector ePos = new PVector(sin(radians(eX))*eFactor+doge.pos.x, cos(radians(eX))*eFactor+doge.pos.y);
-    enemies[i] = new Ball(ePos, 2, 5, color(255, 0, 0), new PVector(doge.pos.x, doge.pos.y));
+    enemies[i] = new Ball(ePos, 2, 8, color(255, 0, 0), new PVector(doge.pos.x, doge.pos.y));
   }
   doge.pos = new PVector(0, 0);
   doge.hp = doge.Maxhp;

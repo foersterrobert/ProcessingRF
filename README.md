@@ -182,5 +182,5 @@ Ball ball2 = new Ball(20, 20, 5);
 println("ball1: " + ball1.d + ", ball2: " + ball2.d);
 ```
 ```java
-"ball1: 2, ball2: 5;
+"ball1: 2, ball2: 5"
 ```

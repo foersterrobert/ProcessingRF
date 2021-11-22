@@ -184,3 +184,10 @@ println("ball1: " + ball1.d + ", ball2: " + ball2.d);
 ```java
 "ball1: 2, ball2: 5"
 ```
+#### 7. Tagebuch
+##### Da mir die oben angerissenen programmier-Konzepte schon vorher bekannt waren bestand für mich die größte Lernerfahrung daraus, die Java-Syntax zu lernen.
+##### Ich habe aus jedem Kapitel aus dem Skript von Michael Kipp die Aufgabe, welche ich am interessantesten fand bearbeitet und veranschaulicht. Darüber hinaus habe ich eigene Projekte bearbeitet wie Spaceinvaders oder ein online multiplayer 3D Spiel.
+##### Neben der Möglichkeit responsive Anwendungen in Processing zu programmieren hat
+
+Insgesamt fällt es mir schwer meine Lernerfahrung mit java Processing (welches ja eigentlich für Künstler erstellt wurde, aber in unserem Fall als Einstieg in die Programmier-Grundlagen benutzt wird) und auch mit dem Skript von Michael Kipp zu beschreiben. Zum einem natürlich weil ich das Skript von Michael Kipp nur sehr spärlich bearbeitet habe, zum anderen aber auch hauptsächlich aufgrund meines schon eher breiteren Vorwissens.
+##### Deswegen ist es natürlich logisch, dass ein Einstieg in die Programmierung und dessen Grundlagen für mich nicht allzu aufschlussreich sind. Trotzdem fand ich es interessant zu sehen wie diese Grundlagen benutzt und verbunden werden um mit Processing in kurzer Zeit anschauliche Grafiken zu erstellen.

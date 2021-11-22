@@ -166,9 +166,13 @@ println(xarray);
 [3] 3
 [4] 4
 ```
+##### Wenn wir schon vorausgewählte Werte für ein Array haben, können wir diese einfach durch geschweifte Klammern definieren.
+```java
+int[] zahlen = {8, 42, -3, 200};
+```
 ---
 #### 6. Klassen
-##### Klassen sind komplizierte Konstrukte, die wir als Blaupause benutzen können, um einzelne Entitäten zu erschaffen.
+##### Klassen sind komplizierte Konstrukte, die wir als Blaupause benutzen können, um einzelne Instanzen zu erschaffen. Über die Punktnotation lässt sich auf die einzelnen Attribute einer Instanz zugreifen. 
 ```java
 class Ball
 {
@@ -184,10 +188,33 @@ println("ball1: " + ball1.d + ", ball2: " + ball2.d);
 ```java
 "ball1: 2, ball2: 5"
 ```
-#### 7. Tagebuch
-##### Da mir die oben angerissenen programmier-Konzepte schon vorher bekannt waren bestand für mich die größte Lernerfahrung daraus, die Java-Syntax zu lernen.
-##### Ich habe aus jedem Kapitel aus dem Skript von Michael Kipp die Aufgabe, welche ich am interessantesten fand bearbeitet und veranschaulicht. Darüber hinaus habe ich eigene Projekte bearbeitet wie Spaceinvaders oder ein online multiplayer 3D Spiel.
-##### Neben der Möglichkeit responsive Anwendungen in Processing zu programmieren hat
+##### Zusätzlich können Klassen eigene Methoden haben, also Funktionen, die einzelnen Instanzen untergeordnet sind und sich ebenfalls über die Punktnotation nutzen lassen.
+```java
+class Ball {
+  int xpos;
+  int ypos;
+  int d;
+  Ball (int _xpos, int _ypos, int _d) {
+      xpos = _xpos;
+      ypos = _ypos;
+      d = _d; // Durchmesser
+  }
 
-Insgesamt fällt es mir schwer meine Lernerfahrung mit java Processing (welches ja eigentlich für Künstler erstellt wurde, aber in unserem Fall als Einstieg in die Programmier-Grundlagen benutzt wird) und auch mit dem Skript von Michael Kipp zu beschreiben. Zum einem natürlich weil ich das Skript von Michael Kipp nur sehr spärlich bearbeitet habe, zum anderen aber auch hauptsächlich aufgrund meines schon eher breiteren Vorwissens.
-##### Deswegen ist es natürlich logisch, dass ein Einstieg in die Programmierung und dessen Grundlagen für mich nicht allzu aufschlussreich sind. Trotzdem fand ich es interessant zu sehen wie diese Grundlagen benutzt und verbunden werden um mit Processing in kurzer Zeit anschauliche Grafiken zu erstellen.
+  String printBall() {
+      return "xpos: " + xpos + ", ypos: " + ypos + ", d: " + d;
+  }
+}
+
+Ball ball1 = new Ball(10, 10, 2);
+println(ball1.printBall());
+```
+```java
+"xpos: 10, ypos: 10, d: 2"
+```
+##### Der erste Code-Block mit demselben Namen wie die Klasse wird Constructor genannt und direkt bei der Instanzierung ausgeführt.
+---
+#### 7. Tagebuch
+##### Da mir die oben angerissenen Programmier-Konzepte schon vorher bekannt waren, bestand für mich die größte Lernerfahrung darin, die Syntax von Java und die beschriebenen Eigenheiten von Processing zu lernen. Vorher war es mir z.B. völlig fremd, den Datentypen einer Variablen bei der Deklarierung angeben zu müssen. Ähnliches gilt für die Beschränkung der Elemente eines Arrays auf nur einen Datentyp oder das void vor Funktionen. Auch an kleinere Abweichungen wie die Schreibweise der for-Schleifen und die Semikolons am Ende einer Zeile musste ich mich erst gewöhnen.
+##### Ich habe aus jedem Kapitel des Skripts von Michael Kipp die Aufgabe, die ich am interessantesten fand, bearbeitet und veranschaulicht. Darüber hinaus habe ich an eigenen Projekten gearbeitet wie z.B. Spaceinvaders oder einem Online-Multiplayer-3D-Spiel. Zusätzlich hat es mir Spaß gemacht, mit kleinen spielerischen Programmen mehr über die einzelnen besonderen Features von Processing samt Libraries zu lernen. 
+##### Neben der Möglichkeit, responsive Anwendungen in Processing zu programmieren, hat mir die Einheit vor allem dabei geholfen, mit der Syntax von Java und Java-ähnlichen Sprachen wie C# vertrauter zu werden. 
+---
